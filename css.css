@@ -1,0 +1,71 @@
+/* Import Font dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    overflow-x: hidden; /* Mencegah scroll horizontal */
+}
+
+#wrapper {
+    display: flex;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 15rem;
+    margin-left: -15rem;
+    transition: margin 0.25s ease-out;
+    background-color: #fff;
+    border-right: 1px solid #dee2e6;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+#page-content-wrapper {
+    min-width: 100vw;
+    width: 100%;
+}
+
+body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
+    margin-left: 0;
+}
+
+/* Penyesuaian untuk layar lebih besar (Desktop) */
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+}
+
+/* Styling Tambahan */
+.card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
