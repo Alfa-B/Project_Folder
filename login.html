@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+        .form-signin {
+            max-width: 400px;
+            width: 100%;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<main class="form-signin w-100 m-auto">
+    <form id="loginForm" class="card p-4">
+        <h1 class="h3 mb-3 fw-normal text-center">Silakan Login</h1>
+        
+        <div id="errorMessage" class="alert alert-danger d-none"></div>
+
+        <div class="form-floating mb-2">
+            <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Username" required>
+            <label for="floatingInput">Username</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        <div class="mb-3 text-center">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="role" id="roleUser" value="user" checked>
+                <label class="form-check-label" for="roleUser">User</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="role" id="roleAdmin" value="admin">
+                <label class="form-check-label" for="roleAdmin">Admin</label>
+            </div>
+        </div>
+
+        <button class="btn btn-primary w-100 py-2" type="submit">Login</button>
+        <p class="mt-3 mb-0 text-center text-muted">Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+    </form>
+
+    <div class="mt-3 card p-3">
+        <small class="text-muted"><strong>Demo Akun:</strong></small>
+        <small>User: <code>user / user123</code></small>
+        <small>Admin: <code>admin / admin123</code></small>
+    </div>
+</main>
+
+<script>
+    // Database simulasi (pengganti database MySQL)
+    const users = [
+        {
+            id: 1,
+            username: 'admin',
+            password: 'admin123',
+            role: 'admin',
+            profile_picture: 'images/default-avatar.png'
+        },
+        {
+            id: 2,
+            username: 'user',
+            password: 'user123',
+            role: 'user',
+            profile_picture: 'images/default-avatar.png'
+        }
+    ];
+
+    // Handle form submit
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('floatingInput').value;
+        const password = document.getElementById('floatingPassword').value;
+        const role = document.querySelector('input[name="role"]:checked').value;
+        const errorDiv = document.getElementById('errorMessage');
+        
+        // Cari user yang cocok
+        const user = users.find(u => 
+            u.username === username && 
+            u.password === password && 
+            u.role === role
+        );
+        
+        if (user) {
+            // Login berhasil - simpan data ke localStorage
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('user_id', user.id);
+            localStorage.setItem('username', user.username);
+            localStorage.setItem('role', user.role);
+            localStorage.setItem('profile_picture', user.profile_picture);
+            
+            // Redirect berdasarkan role
+            if (user.role === 'admin') {
+                window.location.href = 'admin/admin_dashboard.html';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+        } else {
+            // Login gagal
+            errorDiv.textContent = 'Username, password, atau peran tidak cocok!';
+            errorDiv.classList.remove('d-none');
+            
+            // Sembunyikan error setelah 3 detik
+            setTimeout(() => {
+                errorDiv.classList.add('d-none');
+            }, 3000);
+        }
+    });
+
+    // Cek apakah sudah login
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        const role = localStorage.getItem('role');
+        if (role === 'admin') {
+            window.location.href = 'admin/admin_dashboard.html';
+        } else {
+            window.location.href = 'dashboard.html';
+        }
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
